@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 
-import com.zq.planwar.appearance.Appearance;
 import com.zq.planwar.appearance.decorator.Decorator;
 import com.zq.planwar.core.context.GameContext;
 import com.zq.planwar.ext.IBounds;
@@ -15,7 +14,6 @@ import com.zq.planwar.game.plane.equipment.bullet.BulletFactory;
 import com.zq.planwar.game.plane.property.CollingTime;
 import com.zq.planwar.game.plane.property.Level;
 import com.zq.planwar.role.Role;
-import com.zq.planwar.utils.Logger;
 import com.zq.planwar.utils.RectFUtils;
 
 /**
@@ -71,14 +69,8 @@ public class Gun extends Equipment implements ILocation, IBounds {
 
     private void shoot() {
 
-        final int bulletCount = getCurrentBulletCount();
-
-        Bullet[] bullets = new Bullet[bulletCount];
-        for (int i = 0; i < bulletCount; i++) {
-            bullets[i] = bulletFactory.createBullet(this, bulletCount, i);
-        }
+        Bullet[] bullets = bulletFactory.createBullets(this);
         addChild(bullets);
-        Logger.i(Gun.class, "shoot");
     }
 
     public float getShootX() {

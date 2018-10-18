@@ -9,13 +9,13 @@ import com.zq.planwar.appearance.AppearanceUtils;
 import com.zq.planwar.core.context.GameContext;
 import com.zq.planwar.ext.AppearanceHolder;
 import com.zq.planwar.ext.ILocationUpdate;
+import com.zq.planwar.game.plane.equipment.Equipment;
 import com.zq.planwar.game.plane.property.HP;
 import com.zq.planwar.role.Role;
 import com.zq.planwar.role.ext.IAttacker;
 import com.zq.planwar.role.ext.ICollision;
 import com.zq.planwar.role.ext.IDefender;
 import com.zq.planwar.role.ext.ILife;
-import com.zq.planwar.game.plane.equipment.Equipment;
 
 /**
  * Created by zhangqiang on 2018/9/12.

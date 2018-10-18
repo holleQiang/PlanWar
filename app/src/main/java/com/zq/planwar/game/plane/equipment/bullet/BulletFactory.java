@@ -9,21 +9,31 @@ import com.zq.planwar.game.plane.equipment.gun.Gun;
 public abstract class BulletFactory {
 
 
-    protected static float computeX(Gun gun, int bulletWidth, int bulletCount, int index) {
+    float computeX(Gun gun, int bulletWidth, int bulletCount, int index) {
         float locationX = gun.getShootX();
         return locationX - bulletCount * bulletWidth / 2 + bulletWidth / 2 + index * bulletWidth;
     }
 
-    protected static float computeY(Gun gun, DrawableAppearance appearance,int degree) {
+    float computeY(Gun gun, DrawableAppearance appearance, int degree) {
 
         float locationY = gun.getShootY();
         int shootDegree = degree % 360;
-        if(shootDegree >= 0 && shootDegree < 180){
+        if (shootDegree >= 0 && shootDegree < 180) {
             return locationY - gun.getBounds().height() / 2 - appearance.getBounds().height() / 2;
-        }else {
+        } else {
             return locationY + gun.getBounds().height() / 2 + appearance.getBounds().height() / 2;
         }
     }
 
-    public abstract Bullet createBullet(Gun gun, int bulletCount, int index);
+    public Bullet[] createBullets(Gun gun) {
+        final int bulletCount = gun.getCurrentBulletCount();
+
+        Bullet[] bullets = new Bullet[bulletCount];
+        for (int i = 0; i < bulletCount; i++) {
+            bullets[i] = createBullet(gun, bulletCount, i);
+        }
+        return bullets;
+    }
+
+    protected abstract Bullet createBullet(Gun gun, int bulletCount, int i);
 }

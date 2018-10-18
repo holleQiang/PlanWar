@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import com.zq.planwar.appearance.Appearance;
 import com.zq.planwar.appearance.AppearanceUtils;
 import com.zq.planwar.core.context.GameContext;
-import com.zq.planwar.core.pool.Pool;
 import com.zq.planwar.ext.ILocation;
 import com.zq.planwar.game.plane.equipment.Equipment;
 import com.zq.planwar.game.plane.property.HP;
@@ -46,7 +45,6 @@ public class Bullet extends Equipment implements ILife,IAttacker,IDefender,IColl
     protected void onDetachFromParent() {
         super.onDetachFromParent();
 //        Logger.i(Bullet.class, "====Bullet=====onDetachFromParent===========");
-        Pool.getInstance().recycleBullet(this);
     }
 
     @Override
@@ -88,12 +86,6 @@ public class Bullet extends Equipment implements ILife,IAttacker,IDefender,IColl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        isOutOfCanvas = false;
     }
 
     public void setHp(HP hp) {

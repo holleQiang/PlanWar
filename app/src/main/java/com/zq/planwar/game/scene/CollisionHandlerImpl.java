@@ -19,6 +19,7 @@ import com.zq.planwar.role.effect.EffectUtils;
 import com.zq.planwar.role.ext.IAttacker;
 import com.zq.planwar.role.ext.ICollision;
 import com.zq.planwar.role.ext.IDefender;
+import com.zq.planwar.utils.Logger;
 
 import javax.inject.Inject;
 
@@ -67,11 +68,16 @@ public class CollisionHandlerImpl implements CollisionHandler {
             }
         }
 
-        long attackValue = attacker.attackValue();
         HP hp = defender.getHp();
+        if(hp.getHp() < hp.getMinHP()){
+            return;
+        }
+        long attackValue = attacker.attackValue();
         hp.reduce(attackValue);
         if (hp.getHp() < hp.getMinHP()) {
             EffectUtils.boom(context, (Role) defender);
+
+            Logger.i(CollisionHandlerImpl.class,"=========boom=====" + defender);
 
             Airplane airplane = PlaneUtils.findPlane(attacker);
             if (airplane != null) {

@@ -6,7 +6,6 @@ import com.zq.planwar.appearance.impl.DrawableAppearance;
 import com.zq.planwar.appearance.impl.LocationAppearance;
 import com.zq.planwar.appearance.impl.MoveAppearanceImpl;
 import com.zq.planwar.core.context.GameContext;
-import com.zq.planwar.core.pool.Pool;
 import com.zq.planwar.game.plane.equipment.gun.Gun;
 import com.zq.planwar.game.plane.property.HP;
 
@@ -26,25 +25,16 @@ public class EnemyBulletFactory extends BulletFactory {
     @Override
     public Bullet createBullet(Gun gun, int bulletCount, int index) {
 
-        float shootX = computeX(gun,BULLET_WIDTH,bulletCount,index);
+        float shootX = computeX(gun, BULLET_WIDTH, bulletCount, index);
 
         DrawableAppearance drawableAppearance = new DrawableAppearance(context, R.drawable.zidan1);
-        float shootY = computeY(gun,drawableAppearance,270);
+        float shootY = computeY(gun, drawableAppearance, 270);
 
         Appearance appearance = drawableAppearance;
         appearance = new LocationAppearance(shootX, shootY, appearance);
         appearance = new MoveAppearanceImpl(270, gun.getCurrentBulletVelocity(), appearance);
 
-        Bullet bullet = Pool.getInstance().takeBullet();
-        if (bullet == null) {
-            bullet = new Bullet(appearance, new HP(1, 1, 1), 1);
-        }else {
-            bullet.reset();
-            bullet.setAppearance(appearance);
-            bullet.setHp(new HP(1, 1, 1));
-            bullet.setAttackValue(1);
-        }
-        return bullet;
+        return new Bullet(appearance, new HP(1, 1, 1), 1);
     }
 
 }

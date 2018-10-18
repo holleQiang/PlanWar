@@ -76,6 +76,7 @@ public class Role {
 
     public final void notifyRoleTreeChange() {
 
+
         Role parent = getParentRole();
         if (parent != null) {
             parent.notifyRoleTreeChange();
@@ -293,6 +294,8 @@ public class Role {
         isDestroyed = true;
     }
 
+
+
     protected void onDestroy() {
         destroyChildren();
     }
@@ -337,10 +340,5 @@ public class Role {
 
     public void setOnRoleTreeChangeListener(OnRoleTreeChangeListener onRoleTreeChangeListener) {
         this.onRoleTreeChangeListener = onRoleTreeChangeListener;
-    }
-
-    public void reset(){
-        setParentRole(null);
-        isDestroyed = false;
     }
 }

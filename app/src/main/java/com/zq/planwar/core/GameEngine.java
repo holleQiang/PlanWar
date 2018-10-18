@@ -206,11 +206,16 @@ public final class GameEngine implements SurfaceHolder.Callback, Runnable {
             if (src instanceof ICollision) {
 
                 ICollision iCollision = (ICollision) src;
-                RectF bounds = iCollision.getBounds();
-                for (int j = 0; j < gameViewBlocks.length; j++) {
-                    RectF gameViewBlock = gameViewBlocks[j];
-                    if (RectF.intersects(gameViewBlock, bounds)) {
-                        putCollision(j,iCollision);
+
+                if(roleCount < 100){
+                    putCollision(0,iCollision);
+                }else {
+                    RectF bounds = iCollision.getBounds();
+                    for (int j = 0; j < gameViewBlocks.length; j++) {
+                        RectF gameViewBlock = gameViewBlocks[j];
+                        if (RectF.intersects(gameViewBlock, bounds)) {
+                            putCollision(j,iCollision);
+                        }
                     }
                 }
             }

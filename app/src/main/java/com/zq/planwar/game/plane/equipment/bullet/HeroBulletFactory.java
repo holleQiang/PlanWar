@@ -33,6 +33,6 @@ public class HeroBulletFactory extends BulletFactory {
         Appearance appearance = drawableAppearance;
         appearance = new LocationAppearance(shootX, shootY, appearance);
         appearance = new MoveAppearanceImpl(90, gun.getCurrentBulletVelocity(), appearance);
-        return new Bullet(appearance, new HP(1, 1, 1), 10);
+        return new Bullet(appearance, new HP(10, 10, 1), 10);
     }
 }
