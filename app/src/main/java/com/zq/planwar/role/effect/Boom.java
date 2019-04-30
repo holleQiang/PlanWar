@@ -22,7 +22,8 @@ public class Boom extends Role implements ILife,ValueAnimator.AnimatorUpdateList
     private ValueAnimator animator;
     private boolean isAnimatorEnd;
 
-    public Boom(Appearance appearance) {
+    public Boom(GameContext context,Appearance appearance) {
+        super(context);
         this.appearance = appearance;
         animator = ValueAnimator.ofInt(255,0).setDuration(300);
         animator.setInterpolator(new DecelerateInterpolator());
@@ -66,8 +67,8 @@ public class Boom extends Role implements ILife,ValueAnimator.AnimatorUpdateList
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onDestroyed() {
+        super.onDestroyed();
         animator.end();
         animator = null;
     }

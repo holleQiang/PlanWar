@@ -220,17 +220,17 @@ public class AppearanceUtils {
 
         Appearance temp = appearance;
 
-        while (temp != null) {
-
-            if (temp instanceof AbstractAppearance) {
-                return ((AbstractAppearance) temp).getDecorators();
-            }
-            if (temp instanceof AppearanceWrapper) {
-                temp = ((AppearanceWrapper) temp).getWrapper();
-            } else {
-                temp = null;
-            }
-        }
+//        while (temp != null) {
+//
+//            if (temp instanceof AbstractAppearance) {
+//                return ((AbstractAppearance) temp).getDecorators();
+//            }
+//            if (temp instanceof AppearanceWrapper) {
+//                temp = ((AppearanceWrapper) temp).getWrapper();
+//            } else {
+//                temp = null;
+//            }
+//        }
         return null;
     }
 

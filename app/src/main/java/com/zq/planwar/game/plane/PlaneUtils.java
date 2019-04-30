@@ -21,7 +21,7 @@ public class PlaneUtils {
             if (temp instanceof Airplane) {
                 return (Airplane) temp;
             }
-            temp = temp.getParentRole();
+            temp = temp.getParent();
         }
         return null;
     }

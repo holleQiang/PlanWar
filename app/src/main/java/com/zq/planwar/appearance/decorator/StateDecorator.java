@@ -49,7 +49,7 @@ public class StateDecorator implements Decorator {
             float y = bounds.top - textPaint.descent() + animatorState.getTranslateY();
             textPaint.setColor(Color.RED);
             textPaint.setAlpha(animatorState.getAlpha());
-            textPaint.setTextSize(gameContext.dipToGameSize(15));
+            textPaint.setTextSize(15);
             canvas.drawText(info, x, y, textPaint);
         }
     }

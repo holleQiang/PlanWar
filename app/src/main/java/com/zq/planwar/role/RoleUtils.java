@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import com.zq.planwar.ext.IBounds;
 import com.zq.planwar.ext.ILocation;
 import com.zq.planwar.ext.ILocationUpdate;
-import com.zq.planwar.game.scene.Scene;
 import com.zq.planwar.role.ext.ICollision;
 
 /**
@@ -111,19 +110,7 @@ public class RoleUtils {
         }
     }
 
-    public static Object findTag(Role role){
 
-        if(role == null){
-            return null;
-        }
-
-        Object tag = null;
-        while (tag == null && role != null){
-            tag = role.getTag();
-            role = role.getParentRole();
-        }
-        return tag;
-    }
 
     public static boolean isCollision(Role src, Role dest) {
 

@@ -3,8 +3,6 @@ package com.zq.planwar.game.plane.equipment.bullet;
 import com.zq.planwar.R;
 import com.zq.planwar.appearance.Appearance;
 import com.zq.planwar.appearance.impl.DrawableAppearance;
-import com.zq.planwar.appearance.impl.LocationAppearance;
-import com.zq.planwar.appearance.impl.MoveAppearanceImpl;
 import com.zq.planwar.core.context.GameContext;
 import com.zq.planwar.game.plane.equipment.gun.Gun;
 import com.zq.planwar.game.plane.property.HP;
@@ -24,15 +22,14 @@ public class HeroBulletFactory extends BulletFactory {
 
     @Override
     public Bullet createBullet(Gun gun, int bulletCount, int index) {
-        float shootX = computeX(gun,BULLET_WIDTH,bulletCount,index);
+        int shootX = computeX(gun,BULLET_WIDTH,bulletCount,index);
 
         DrawableAppearance drawableAppearance = new DrawableAppearance(context, R.drawable.zidan1);
-        drawableAppearance.setRotationDegree(180);
-        float shootY = computeY(gun,drawableAppearance,90);
+        drawableAppearance.setRotate(180);
 
-        Appearance appearance = drawableAppearance;
-        appearance = new LocationAppearance(shootX, shootY, appearance);
-        appearance = new MoveAppearanceImpl(90, gun.getCurrentBulletVelocity(), appearance);
-        return new Bullet(appearance, new HP(10, 10, 1), 10);
+        int shootY = computeY(gun,drawableAppearance,90);
+        drawableAppearance.setX(shootX);
+        drawableAppearance.setY(shootY);
+        return new Bullet(context, drawableAppearance, new HP(10, 10, 1), 10);
     }
 }

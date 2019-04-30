@@ -3,8 +3,6 @@ package com.zq.planwar.game.plane.equipment.bullet;
 import com.zq.planwar.R;
 import com.zq.planwar.appearance.Appearance;
 import com.zq.planwar.appearance.impl.DrawableAppearance;
-import com.zq.planwar.appearance.impl.LocationAppearance;
-import com.zq.planwar.appearance.impl.MoveAppearanceImpl;
 import com.zq.planwar.core.context.GameContext;
 import com.zq.planwar.game.plane.equipment.gun.Gun;
 import com.zq.planwar.game.plane.property.HP;
@@ -28,9 +26,7 @@ public class BossBulletFactory extends BulletFactory {
         float shootY = computeY(gun,drawableAppearance,degree);
 
         Appearance appearance = drawableAppearance;
-        appearance = new LocationAppearance(gun.getShootX(), shootY, appearance);
-        appearance = new MoveAppearanceImpl(degree, gun.getCurrentBulletVelocity(), appearance);
 
-        return new Bullet(appearance, new HP(1, 1, 1), 1);
+        return new Bullet(context,appearance, new HP(1, 1, 1), 1);
     }
 }

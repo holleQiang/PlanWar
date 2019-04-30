@@ -16,6 +16,9 @@ import com.zq.planwar.game.plane.property.Level;
 import com.zq.planwar.role.Role;
 import com.zq.planwar.utils.RectFUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
  * Created by zhangqiang on 2018/9/13.
  */
@@ -33,8 +36,8 @@ public class Gun extends Equipment implements ILocation, IBounds {
     private int maxBulletVelocity = 1000;
     private Decorator[] decorators;
 
-    public Gun(Decorator[] decorators,BulletFactory bulletFactory, Level level,  CollingTime collingTime) {
-        super(null);
+    public Gun(GameContext context,Decorator[] decorators,BulletFactory bulletFactory, Level level,  CollingTime collingTime) {
+        super(context,null);
         this.decorators = decorators;
         this.bulletFactory = bulletFactory;
         this.level = level;
@@ -45,7 +48,7 @@ public class Gun extends Equipment implements ILocation, IBounds {
     protected void onDraw(Canvas canvas, GameContext gameContext) {
         super.onDraw(canvas, gameContext);
         if (bulletFactory != null) {
-            long pastTime = gameContext.getPastTime();
+            long pastTime = gameContext.getCurrentTime();
             if (lastShootTime == INVALID_DATA) {
 
                 shoot();
@@ -70,22 +73,22 @@ public class Gun extends Equipment implements ILocation, IBounds {
     private void shoot() {
 
         Bullet[] bullets = bulletFactory.createBullets(this);
-        addChild(bullets);
+        addChildList(Arrays.<Role>asList(bullets));
     }
 
-    public float getShootX() {
+    public int getShootX() {
 
-        return getLocationX();
+        return getAppearance().getX();
     }
 
-    public float getShootY() {
+    public int getShootY() {
 
-        return getLocationY();
+        return getAppearance().getY();
     }
 
     @Override
     public float getLocationX() {
-        Role parentRole = getParentRole();
+        Role parentRole = getParent();
         if (parentRole instanceof ILocation) {
             return ((ILocation) parentRole).getLocationX();
         }
@@ -94,7 +97,7 @@ public class Gun extends Equipment implements ILocation, IBounds {
 
     @Override
     public float getLocationY() {
-        Role parentRole = getParentRole();
+        Role parentRole = getParent();
         if (parentRole instanceof ILocation) {
             return ((ILocation) parentRole).getLocationY();
         }
@@ -104,7 +107,7 @@ public class Gun extends Equipment implements ILocation, IBounds {
     @NonNull
     @Override
     public RectF getBounds() {
-        Role parentRole = getParentRole();
+        Role parentRole = getParent();
         if (parentRole instanceof IBounds) {
             return ((IBounds) parentRole).getBounds();
         }

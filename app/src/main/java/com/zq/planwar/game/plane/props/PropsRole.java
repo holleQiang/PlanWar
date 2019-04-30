@@ -22,7 +22,8 @@ public class PropsRole extends Role implements ILife,AppearanceHolder,ICollision
     private HP hp = new HP(1,1,1);
     private Props props;
 
-    public PropsRole(Appearance appearance) {
+    public PropsRole(GameContext context,Appearance appearance) {
+        super(context);
         this.appearance = appearance;
     }
 
@@ -45,8 +46,8 @@ public class PropsRole extends Role implements ILife,AppearanceHolder,ICollision
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onDestroyed() {
+        super.onDestroyed();
         AppearanceUtils.release(getAppearance());
     }
 

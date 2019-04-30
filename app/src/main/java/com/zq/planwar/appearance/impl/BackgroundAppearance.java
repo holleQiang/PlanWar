@@ -3,57 +3,63 @@ package com.zq.planwar.appearance.impl;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 import com.zq.planwar.R;
 import com.zq.planwar.appearance.Appearance;
 import com.zq.planwar.core.context.GameContext;
 
-import javax.inject.Inject;
-
 /**
  * Created by zhangqiang on 2018/9/12.
  */
-public class BackgroundAppearance implements Appearance {
+public class BackgroundAppearance extends Appearance {
 
     private Bitmap bgBitmap;
-    private GameContext context;
     private Paint mPaint = new Paint();
     //速度（px/每秒）
-    private float velocity = 200;
+    private static final float VELOCITY = 200;
+    private long startTime;
 
-    @Inject
     public BackgroundAppearance(GameContext context) {
-        this.context = context;
+        super(context);
         mPaint.setAntiAlias(true);
         mPaint.setFilterBitmap(true);
     }
 
+
     @Override
-    public void draw(@NonNull Canvas canvas, @NonNull GameContext gameContext) {
-        int width = canvas.getWidth();
+    protected void onDraw(Canvas canvas, GameContext gameContext) {
 
         if (bgBitmap == null) {
-            bgBitmap = gameContext.decodeResource( R.drawable.bg4);
-            int bWidth = bgBitmap.getWidth();
-            int bHeight = bgBitmap.getHeight();
-            float sizeScaleFactor = (float) width / bWidth;
-            float scaleBitmapHeight = bHeight * sizeScaleFactor;
-            bgBitmap = Bitmap.createScaledBitmap(bgBitmap, width, (int) scaleBitmapHeight, true);
+            bgBitmap = ((BitmapDrawable) gameContext.getDrawable(R.drawable.bg4)).getBitmap();
+            float scaleX = (float) gameContext.getWidth() / bgBitmap.getWidth();
+            int realHeight = (int) (bgBitmap.getHeight() * scaleX);
+            bgBitmap = Bitmap.createScaledBitmap(bgBitmap, gameContext.getWidth(), realHeight, true);
         }
 
         int bHeight = bgBitmap.getHeight();
 
-        float bgOffset = (float) gameContext.getPastTime() / 1000 * velocity % (bHeight);
+        long currentTime = gameContext.getCurrentTime();
 
-        mPaint.reset();
-        mPaint.setAntiAlias(true);
+        if (startTime > 0) {
 
-        int save1 = canvas.save();
-        canvas.translate(0, -bgOffset);
-        canvas.drawBitmap(bgBitmap, 0, 0, mPaint);
-        canvas.translate(0, bHeight);
-        canvas.drawBitmap(bgBitmap, 0, 0, mPaint);
-        canvas.restoreToCount(save1);
+            float bgOffset = (float) (currentTime - startTime) / 1000 * VELOCITY % (bHeight);
+
+            mPaint.reset();
+            mPaint.setAntiAlias(true);
+            mPaint.setFilterBitmap(true);
+
+            int save1 = canvas.save();
+            canvas.translate(0, bgOffset);
+            canvas.drawBitmap(bgBitmap, 0, 0, mPaint);
+            canvas.translate(0, -bHeight + 1);
+            canvas.drawBitmap(bgBitmap, 0, 0, mPaint);
+            canvas.restoreToCount(save1);
+        } else {
+            startTime = currentTime;
+        }
+        invalidate();
     }
 }

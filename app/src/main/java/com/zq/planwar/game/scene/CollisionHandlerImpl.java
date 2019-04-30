@@ -1,8 +1,8 @@
 package com.zq.planwar.game.scene;
 
 import com.zq.planwar.appearance.AppearanceUtils;
-import com.zq.planwar.core.context.GameContext;
 import com.zq.planwar.core.collision.CollisionHandler;
+import com.zq.planwar.core.context.GameContext;
 import com.zq.planwar.game.plane.Airplane;
 import com.zq.planwar.game.plane.PlaneUtils;
 import com.zq.planwar.game.plane.equipment.Equipment;
@@ -14,14 +14,10 @@ import com.zq.planwar.game.plane.props.Props;
 import com.zq.planwar.game.plane.props.PropsFactory;
 import com.zq.planwar.game.plane.props.PropsRole;
 import com.zq.planwar.role.Role;
-import com.zq.planwar.role.RoleUtils;
-import com.zq.planwar.role.effect.EffectUtils;
 import com.zq.planwar.role.ext.IAttacker;
 import com.zq.planwar.role.ext.ICollision;
 import com.zq.planwar.role.ext.IDefender;
 import com.zq.planwar.utils.Logger;
-
-import javax.inject.Inject;
 
 /**
  * Created by zhangqiang on 2018/9/27.
@@ -30,7 +26,6 @@ public class CollisionHandlerImpl implements CollisionHandler {
 
     private GameContext context;
 
-    @Inject
     public CollisionHandlerImpl(GameContext context) {
         this.context = context;
     }
@@ -60,13 +55,6 @@ public class CollisionHandlerImpl implements CollisionHandler {
 
     private void handAttack(IAttacker attacker, IDefender defender) {
 
-        if (attacker instanceof Role && defender instanceof Role) {
-            Object attackerTag = RoleUtils.findTag((Role) attacker);
-            Object defenderTag = RoleUtils.findTag((Role) defender);
-            if (attackerTag != null && attackerTag.equals(defenderTag)) {
-                return;
-            }
-        }
 
         HP hp = defender.getHp();
         if(hp.getHp() < hp.getMinHP()){
@@ -75,7 +63,7 @@ public class CollisionHandlerImpl implements CollisionHandler {
         long attackValue = attacker.attackValue();
         hp.reduce(attackValue);
         if (hp.getHp() < hp.getMinHP()) {
-            EffectUtils.boom(context, (Role) defender);
+//            EffectUtils.boom(context, (Role) defender);
 
             Logger.i(CollisionHandlerImpl.class,"=========boom=====" + defender);
 
@@ -98,7 +86,7 @@ public class CollisionHandlerImpl implements CollisionHandler {
         int type = props.getType();
         switch (type) {
             case PropsFactory.TYPE_WEAPON_LEVEL_UP:
-                Equipment weapon = airplane.getWeapon();
+                Equipment weapon = null;
                 if (weapon instanceof Gun) {
                     Level level = ((Gun) weapon).getLevel();
                     level.setLevel(level.getLevel() + 1);

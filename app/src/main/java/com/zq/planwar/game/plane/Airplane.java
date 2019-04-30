@@ -24,60 +24,20 @@ public class Airplane extends Role implements ILife,
         ICollision,
         ILocationUpdate,
         IDefender,
-        IAttacker,
-        AppearanceHolder{
+        IAttacker{
 
-    //生命值
-    private HP hp;
-    //外观
-    private Appearance appearance;
-    //武器
-    private Equipment weapon;
-
-    public Airplane(HP hp, Appearance appearance, Equipment weapon) {
-        this.hp = hp;
-        this.appearance = appearance;
-        setWeapon(weapon);
+    public Airplane(GameContext context) {
+        super(context);
     }
 
     @Override
-    protected void onDraw(Canvas canvas, GameContext gameContext) {
-        super.onDraw(canvas, gameContext);
-
-        if (appearance != null) {
-            appearance.draw(canvas, gameContext);
-        }
-    }
-
-    @Override
-    public Appearance getAppearance() {
-        return appearance;
-    }
-
-    public void setAppearance(Appearance appearance) {
-        this.appearance = appearance;
-    }
-
-    public Equipment getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(Equipment weapon) {
-
-        if (weapon == null || this.weapon == weapon) {
-            return;
-        }
-        if (this.weapon != null) {
-            removeChild(this.weapon);
-        }
-        this.weapon = weapon;
-        addChild(weapon);
+    protected void onDraw(Canvas canvas, GameContext context) {
+        super.onDraw(canvas, context);
     }
 
     @Override
     public boolean isAlive() {
-        return hp != null
-                && hp.getHp() > 0;
+        return false;
     }
 
     @Override
@@ -93,8 +53,8 @@ public class Airplane extends Role implements ILife,
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onDestroyed() {
+        super.onDestroyed();
         AppearanceUtils.release(getAppearance());
     }
 
@@ -126,7 +86,7 @@ public class Airplane extends Role implements ILife,
 
     @Override
     public HP getHp() {
-        return hp;
+        return null;
     }
 
     @Override

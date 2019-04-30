@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.zq.planwar.utils.DensityUtils;
 
@@ -14,74 +16,54 @@ import com.zq.planwar.utils.DensityUtils;
  */
 public class DefaultGameContextFactory extends GameContextFactory {
 
+    public static final int WIDTH = 1080;
+    public static final int HEIGHT = 1920;
+
+    private View gameView;
     private Context context;
 
-    public DefaultGameContextFactory(Context context) {
-        this.context = context;
+    public DefaultGameContextFactory(View gameView) {
+        this.gameView = gameView;
+        this.context = gameView.getContext();
     }
 
     @Override
     public GameContext createGameContext() {
 
-        return new GameContext(720, 1280) {
+        final int viewWidth = gameView.getWidth();
+        final int viewHeight = gameView.getHeight();
+        return new GameContext() {
+
+            @Override
+            public int getWidth() {
+                return WIDTH;
+            }
+
+            @Override
+            public int getHeight() {
+                return HEIGHT;
+            }
 
             @Override
             public Drawable getDrawable(int drawableResId) {
 
-
                 int density = getScaleDensityDpi(context.getResources().getDisplayMetrics());
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    return context.getResources().getDrawableForDensity(drawableResId, density, context.getTheme());
-                } else {
-                    return context.getResources().getDrawableForDensity(drawableResId, density);
-                }
+                return ResourcesCompat.getDrawableForDensity(context.getResources(), drawableResId, density, context.getTheme());
             }
 
             @Override
-            public int toRealWidth(float gameWidth) {
-
-                return Math.round((float) getRealWidth() / getGameViewWidth() * gameWidth);
+            public long getCurrentTime() {
+                return System.currentTimeMillis();
             }
 
             @Override
-            public int toRealHeight(float gameHeight) {
-                return Math.round((float) getRealHeight() / getGameViewHeight() * gameHeight);
+            public float getXScaleFactor() {
+                return (float) getWidth()/viewWidth;
             }
 
             @Override
-            public float toGameWidth(float px) {
-                return getGameViewWidth() * px / getRealWidth();
-            }
-
-            @Override
-            public float toGameHeight(float px) {
-                return getGameViewWidth() * px / getRealWidth();
-            }
-
-            @Override
-            public Bitmap decodeResource(int resId) {
-                return BitmapFactory.decodeResource(context.getResources(), resId);
-            }
-
-            @Override
-            public int getRealWidth() {
-                return context.getResources().getDisplayMetrics().widthPixels;
-            }
-
-            @Override
-            public int getRealHeight() {
-                return context.getResources().getDisplayMetrics().heightPixels;
-            }
-
-            @Override
-            public float dipToGameSize(float dip) {
-                return pxToGameSize(DensityUtils.dp2px(context, dip));
-            }
-
-            @Override
-            public float pxToGameSize(int px) {
-                return px * getScaleFactor(context.getResources().getDisplayMetrics());
+            public float getYScaleFactor() {
+                return (float) getHeight()/viewHeight;
             }
 
             private float getScaleFactor(DisplayMetrics displayMetrics) {
@@ -89,8 +71,8 @@ public class DefaultGameContextFactory extends GameContextFactory {
                 int widthPixels = displayMetrics.widthPixels;
                 int heightPixels = displayMetrics.heightPixels;
 
-                int gameViewWidth = getGameViewWidth();
-                int gameViewHeight = getGameViewHeight();
+                int gameViewWidth = getWidth();
+                int gameViewHeight = getHeight();
 
                 return Math.max((float) gameViewWidth / widthPixels, (float) gameViewHeight / heightPixels);
             }

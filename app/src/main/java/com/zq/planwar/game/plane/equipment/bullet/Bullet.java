@@ -25,8 +25,8 @@ public class Bullet extends Equipment implements ILife,IAttacker,IDefender,IColl
     private HP hp;
     private int attackValue;
 
-    public Bullet(Appearance appearance, HP hp, int attackValue) {
-        super(appearance);
+    public Bullet(GameContext context,Appearance appearance, HP hp, int attackValue) {
+        super(context,appearance);
         this.hp = hp;
         this.attackValue = attackValue;
     }
@@ -37,15 +37,10 @@ public class Bullet extends Equipment implements ILife,IAttacker,IDefender,IColl
 
         float x = AppearanceUtils.getLocationX(getAppearance());
         float y = AppearanceUtils.getLocationY(getAppearance());
-        isOutOfCanvas = gameContext.isBeyondVisibleRange(getBounds());
+        isOutOfCanvas = gameContext.isOutOfVisibleRect(this);
         Logger.i(Bullet.class, "====Bullet=====x===" + x + "===y=====" + y);
     }
 
-    @Override
-    protected void onDetachFromParent() {
-        super.onDetachFromParent();
-//        Logger.i(Bullet.class, "====Bullet=====onDetachFromParent===========");
-    }
 
     @Override
     public boolean isAlive() {
@@ -84,8 +79,8 @@ public class Bullet extends Equipment implements ILife,IAttacker,IDefender,IColl
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onDestroyed() {
+        super.onDestroyed();
     }
 
     public void setHp(HP hp) {

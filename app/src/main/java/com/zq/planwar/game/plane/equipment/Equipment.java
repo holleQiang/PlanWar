@@ -14,7 +14,8 @@ public class Equipment extends Role implements AppearanceHolder {
 
     private Appearance appearance;
 
-    public Equipment(Appearance appearance) {
+    public Equipment(GameContext context,Appearance appearance) {
+        super(context);
         this.appearance = appearance;
     }
 
